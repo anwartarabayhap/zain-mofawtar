@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tableau Visualization</title>
+    <style>
+        html, body {
+            height: 100%; /* Make sure the body takes full height */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+        }
+        #vizWrapper {
+            width: 100%; /* Set wrapper to take full width of its container */
+            height: 100%; /* Set wrapper to take full height of its container */
+            position: relative; /* Needed for absolute positioning inside */
+        }
+        #vizContainer {
+            width: 100%; /* Full width relative to the wrapper */
+            height: 100%; /* Full height relative to the wrapper */
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="vizWrapper">
+        <div id="vizContainer"></div>
+    </div>
+    <script type="text/javascript" src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
+    <script type="text/javascript">
+        var viz;
+
+        function initViz() {
+            var containerDiv = document.getElementById("vizContainer"),
+                url = "https://public.tableau.com/views/ZainMofawtar-OnlineVersion/FinalDB?:showAppBanner=false&:showVizHome=no&:embed=true&:showShareOptions=false&:origin=viz_share_link&:showShareOptions=false&:showDownload=false",
+                options = {
+                    hideTabs: true,
+                    hideToolbar: true,
+                    onFirstInteractive: function() {
+                        resizeViz(); // Ensure initial sizing is correct
+                    }
+                };
+
+            viz = new tableau.Viz(containerDiv, url, options);
+        }
+
+        function resizeViz() {
+            var wrapper = document.getElementById("vizWrapper");
+            var container = document.getElementById("vizContainer");
+            container.style.height = wrapper.offsetHeight + "px"; // Update container height
+            container.style.width = wrapper.offsetWidth + "px"; // Update container width
+
+            // Adjust Tableau viz size to match new container size
+            if (viz) {
+                viz.setFrameSize(wrapper.offsetWidth, wrapper.offsetHeight);
+            }
+        }
+
+        window.onload = initViz;
+        window.onresize = resizeViz; // Adjust size on window resize
+    </script>
+</body>
+</html>
